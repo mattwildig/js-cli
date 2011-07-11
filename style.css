@@ -1,4 +1,7 @@
 .text {
-    font-family: monospace;
     white-space: pre;
+}
+
+.cli {
+    font-family: monospace;
 }
