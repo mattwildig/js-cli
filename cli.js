@@ -1,15 +1,29 @@
 var prompt = "> ";
 var cmdString = "";
+var cursorPos = 0;
 
 function doEnter() {
   addHistoryLine();
   doCommand(cmdString);
   cmdString = "";
+  cursorPos = 0;
   refreshCommand();
 }
 
 function refreshCommand() {
-  $("#command").empty().append(cmdString);
+  if (cmdString.length == cursorPos) {
+    $("#command").empty().append(cmdString).append("<span id='cursor'> </span>");
+  } else {
+    $("#command").empty()
+      .append(cmdString.substr(0, cursorPos))
+      .append("<span id='cursor'>" + cmdString.charAt(cursorPos) +  "</span>")
+      .append(cmdString.substr(cursorPos + 1));
+  }
+}
+
+function addCharacter(char) {
+  cmdString = cmdString.substr(0, cursorPos) + char + cmdString.substr(cursorPos);
+  refreshCommand();
 }
 
 function addHistoryLine() {
@@ -43,10 +57,13 @@ $(function () {
   $("#text, #command, #prompt").addClass("text");
   $("#prompt").append(prompt);
   
+  refreshCommand();
+  
   $(document).keypress(function(event) {
     if (event.which > 31 && event.which < 127) { //ascii printable for now
-      cmdString += String.fromCharCode(event.which);
-      $("#command").empty().append(cmdString);
+      addCharacter(String.fromCharCode(event.which));
+      cursorPos ++;
+      refreshCommand();
     }
     else if (event.which == 13) { //13 is enter/return
       doEnter();
@@ -61,6 +78,18 @@ $(function () {
       event.preventDefault();
       cmdString = cmdString.substr(0, cmdString.length - 1);
       refreshCommand();
+    }
+    else if (event.which == 37) { //left
+      if (cursorPos > 0) {
+        cursorPos--;
+        refreshCommand();
+      }
+    }
+    else if (event.which == 39) { //right
+      if (cursorPos < cmdString.length) {
+        cursorPos++;
+        refreshCommand();
+      }
     }
     console.log("Keydown: " + event.which);
   });

@@ -10,3 +10,7 @@
 body {
     overflow: hidden;
 }
+
+#cursor {
+    text-decoration: underline;
+}
