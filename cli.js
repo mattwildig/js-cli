@@ -6,11 +6,11 @@ function doEnter() {
   doCommand(cmdString);
   cmdString = "";
   $("#command").empty().append(cmdString);
-};
+}
 
 function addHistoryLine() {
   $("#text").append("<div>" + prompt + cmdString + "</div>");
-};
+}
 
 function doCommand(command) {
   command = $.trim(command);
@@ -22,11 +22,11 @@ function doCommand(command) {
     $("#cli").fadeOut("slow").fadeIn("slow");
   }
   resize();
-};
+}
 
 function print(line) {
   $("#text").append("<div>" + line + "</div>");
-};
+}
 
 function resize() {
   if ($("#cli").height() > window.innerHeight) {
