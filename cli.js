@@ -5,6 +5,10 @@ function doEnter() {
   addHistoryLine();
   doCommand(cmdString);
   cmdString = "";
+  refreshCommand();
+}
+
+function refreshCommand() {
   $("#command").empty().append(cmdString);
 }
 
@@ -50,6 +54,15 @@ $(function () {
     else {
       console.log("Non printable: " + event.which);
     }
+  });
+  
+  $(document).keydown(function(event) {
+    if (event.which == 8) { //backspace
+      event.preventDefault();
+      cmdString = cmdString.substr(0, cmdString.length - 1);
+      refreshCommand();
+    }
+    console.log("Keydown: " + event.which);
   });
   
   $(window).resize(function() {
