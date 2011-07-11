@@ -26,6 +26,11 @@ function addCharacter(char) {
   refreshCommand();
 }
 
+function deleteCharacter() {
+  cmdString = cmdString.substr(0, cursorPos) + cmdString.substr(cursorPos + 1);
+  refreshCommand();
+}
+
 function addHistoryLine() {
   $("#text").append("<div>" + prompt + cmdString + "</div>");
 }
@@ -76,8 +81,10 @@ $(function () {
   $(document).keydown(function(event) {
     if (event.which == 8) { //backspace
       event.preventDefault();
-      cmdString = cmdString.substr(0, cmdString.length - 1);
-      refreshCommand();
+      if (cursorPos > 0) {
+        cursorPos--;
+        deleteCharacter();
+      }
     }
     else if (event.which == 37) { //left
       if (cursorPos > 0) {
