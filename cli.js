@@ -13,17 +13,29 @@ function addHistoryLine() {
 };
 
 function doCommand(command) {
-  if ($.trim(command) != "") {
+  command = $.trim(command);
+  if (command != "") {
     print("Executing " + command);
   }
+
+  if (command == "pulse") {
+    $("#cli").fadeOut("slow").fadeIn("slow");
+  }
+  resize();
 };
 
 function print(line) {
   $("#text").append("<div>" + line + "</div>");
 };
 
+function resize() {
+  if ($("#cli").height() > window.innerHeight) {
+    $("#cli").css("top", window.innerHeight - $("#cli").height());
+  }
+}
+
 $(function () {
-  
+
   $("#text, #command, #prompt").addClass("text");
   $("#prompt").append(prompt);
   
@@ -38,6 +50,10 @@ $(function () {
     else {
       console.log("Non printable: " + event.which);
     }
+  });
+  
+  $(window).resize(function() {
+    resize();
   });
 });
 
