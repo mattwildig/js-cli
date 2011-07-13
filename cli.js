@@ -9,7 +9,9 @@ var histTmpCommand = "";
 function doEnter() {
   addHistoryLine();
   doCommand(cmdString);
-  cmdHistory.unshift(cmdString);
+  if ($.trim(cmdString) != "" && cmdString != cmdHistory[0]) {
+    cmdHistory.unshift(cmdString);
+  }
   histPos = -1;
   cmdString = "";
   cursorPos = 0;
