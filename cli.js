@@ -2,9 +2,15 @@ var prompt = "> ";
 var cmdString = "";
 var cursorPos = 0;
 
+var cmdHistory = [];
+var histPos = -1;
+var histTmpCommand = "";
+
 function doEnter() {
   addHistoryLine();
   doCommand(cmdString);
+  cmdHistory.unshift(cmdString);
+  histPos = -1;
   cmdString = "";
   cursorPos = 0;
   refreshCommand();
@@ -58,7 +64,7 @@ function resize() {
 }
 
 $(function () {
-
+  
   $("#text, #command, #prompt").addClass("text");
   $("#prompt").append(prompt);
   
@@ -98,7 +104,31 @@ $(function () {
         refreshCommand();
       }
     }
-    console.log("Keydown: " + event.which);
+    else if (event.which == 38) { //up
+      if (histPos < cmdHistory.length - 1) {
+        histPos++;
+        if (histPos == 0) {
+          histTmpCommand = cmdString;
+        }
+        cmdString = cmdHistory[histPos];
+        cursorPos = cmdString.length;
+        refreshCommand();
+      }
+    }
+    else if (event.which == 40) { //down
+      if (histPos > -1) {
+        histPos--;
+        if (histPos == -1) {
+          cmdString = histTmpCommand;
+        } else {
+          cmdString = cmdHistory[histPos];
+        }
+        cursorPos = cmdString.length;
+        refreshCommand();
+      }
+    } else {
+      console.log("Keydown: " + event.which);
+    }
   });
   
   $(window).resize(function() {
