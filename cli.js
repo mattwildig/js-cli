@@ -128,7 +128,7 @@ CLI = function() {
         cursorPos = cmdString.length;
         refreshCommand();
       }
-    } else {
+    } else if (! event.which > 31 && event.which < 127){
       console.log("Keydown: " + event.which);
     }
   });
