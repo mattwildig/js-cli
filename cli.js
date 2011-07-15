@@ -1,7 +1,5 @@
 CLI = function() {
-  
-  var self = this;
-  
+
   var prompt_str = "> ";
   var cmdString = "";
   var cursorPos = 0;
