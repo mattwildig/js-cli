@@ -69,77 +69,74 @@ CLI = function() {
     }
   }
   
-  this.init = function() {
-  
-    $("#text, #command, #prompt").addClass("text");
-    $("#prompt").append(prompt_str);
-  
-    self.refreshCommand();
-  
-    $(document).keypress(function(event) {
-      if (event.which > 31 && event.which < 127) { //ascii printable for now
-        self.addCharacter(String.fromCharCode(event.which));
-        cursorPos ++;
+  $("#text, #command, #prompt").addClass("text");
+  $("#prompt").append(prompt_str);
+
+  self.refreshCommand();
+
+  $(document).keypress(function(event) {
+    if (event.which > 31 && event.which < 127) { //ascii printable for now
+      self.addCharacter(String.fromCharCode(event.which));
+      cursorPos ++;
+      self.refreshCommand();
+    }
+    else if (event.which == 13) { //13 is enter/return
+      self.doEnter();
+    }
+    else {
+      console.log("Non printable: " + event.which);
+    }
+  });
+
+  $(document).keydown(function(event) {
+    if (event.which == 8) { //backspace
+      event.preventDefault();
+      if (cursorPos > 0) {
+        cursorPos--;
+        self.deleteCharacter();
+      }
+    }
+    else if (event.which == 37) { //left
+      if (cursorPos > 0) {
+        cursorPos--;
         self.refreshCommand();
       }
-      else if (event.which == 13) { //13 is enter/return
-        self.doEnter();
+    }
+    else if (event.which == 39) { //right
+      if (cursorPos < cmdString.length) {
+        cursorPos++;
+        self.refreshCommand();
       }
-      else {
-        console.log("Non printable: " + event.which);
-      }
-    });
-  
-    $(document).keydown(function(event) {
-      if (event.which == 8) { //backspace
-        event.preventDefault();
-        if (cursorPos > 0) {
-          cursorPos--;
-          self.deleteCharacter();
+    }
+    else if (event.which == 38) { //up
+      if (histPos < cmdHistory.length - 1) {
+        histPos++;
+        if (histPos == 0) {
+          histTmpCommand = cmdString;
         }
+        cmdString = cmdHistory[histPos];
+        cursorPos = cmdString.length;
+        self.refreshCommand();
       }
-      else if (event.which == 37) { //left
-        if (cursorPos > 0) {
-          cursorPos--;
-          self.refreshCommand();
-        }
-      }
-      else if (event.which == 39) { //right
-        if (cursorPos < cmdString.length) {
-          cursorPos++;
-          self.refreshCommand();
-        }
-      }
-      else if (event.which == 38) { //up
-        if (histPos < cmdHistory.length - 1) {
-          histPos++;
-          if (histPos == 0) {
-            histTmpCommand = cmdString;
-          }
+    }
+    else if (event.which == 40) { //down
+      if (histPos > -1) {
+        histPos--;
+        if (histPos == -1) {
+          cmdString = histTmpCommand;
+        } else {
           cmdString = cmdHistory[histPos];
-          cursorPos = cmdString.length;
-          self.refreshCommand();
         }
+        cursorPos = cmdString.length;
+        self.refreshCommand();
       }
-      else if (event.which == 40) { //down
-        if (histPos > -1) {
-          histPos--;
-          if (histPos == -1) {
-            cmdString = histTmpCommand;
-          } else {
-            cmdString = cmdHistory[histPos];
-          }
-          cursorPos = cmdString.length;
-          self.refreshCommand();
-        }
-      } else {
-        console.log("Keydown: " + event.which);
-      }
-    });
-  
-    $(window).resize(function() {
-      self.resize();
-    });
-  }
+    } else {
+      console.log("Keydown: " + event.which);
+    }
+  });
+
+  $(window).resize(function() {
+    self.resize();
+  });
 
 }

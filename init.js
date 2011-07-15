@@ -1,5 +1,5 @@
 
 $(function () {
-  new CLI().init();
+  new CLI();
 });
 
