@@ -10,19 +10,19 @@ CLI = function() {
   var histPos = -1;
   var histTmpCommand = "";
 
-  this.doEnter = function() {
-    self.addHistoryLine();
-    self.doCommand(cmdString);
+  function doEnter() {
+    addHistoryLine();
+    doCommand(cmdString);
     if ($.trim(cmdString) != "" && cmdString != cmdHistory[0]) {
       cmdHistory.unshift(cmdString);
     }
     histPos = -1;
     cmdString = "";
     cursorPos = 0;
-    self.refreshCommand();
+    refreshCommand();
   }
 
-  this.refreshCommand = function() {
+  function refreshCommand() {
     if (cmdString.length == cursorPos) {
       $("#command").empty().append(cmdString).append("<span id='cursor'> </span>");
     } else {
@@ -33,37 +33,37 @@ CLI = function() {
     }
   }
 
-  this.addCharacter = function(char) {
+  function addCharacter (char) {
     cmdString = cmdString.substr(0, cursorPos) + char + cmdString.substr(cursorPos);
-    self.refreshCommand();
+    refreshCommand();
   }
 
-  this.deleteCharacter = function() {
+  function deleteCharacter() {
     cmdString = cmdString.substr(0, cursorPos) + cmdString.substr(cursorPos + 1);
-    self.refreshCommand();
+    refreshCommand();
   }
 
-  this.addHistoryLine = function() {
+  function addHistoryLine() {
     $("#text").append("<div>" + prompt_str + cmdString + "</div>");
   }
 
-  this.doCommand = function(command) {
+  function doCommand(command) {
     command = $.trim(command);
     if (command != "") {
-      self.print("Executing " + command);
+      print("Executing " + command);
     }
 
     if (command == "pulse") {
       $("#cli").fadeOut("slow").fadeIn("slow");
     }
-    self.resize();
+    resize();
   }
 
-  this.print = function(line) {
+  function print(line) {
     $("#text").append("<div>" + line + "</div>");
   }
 
-  this.resize = function() {
+  function resize() {
     if ($("#cli").height() > window.innerHeight) {
       $("#cli").css("top", window.innerHeight - $("#cli").height());
     }
@@ -72,16 +72,16 @@ CLI = function() {
   $("#text, #command, #prompt").addClass("text");
   $("#prompt").append(prompt_str);
 
-  self.refreshCommand();
+  refreshCommand();
 
   $(document).keypress(function(event) {
     if (event.which > 31 && event.which < 127) { //ascii printable for now
-      self.addCharacter(String.fromCharCode(event.which));
+      addCharacter(String.fromCharCode(event.which));
       cursorPos ++;
-      self.refreshCommand();
+      refreshCommand();
     }
     else if (event.which == 13) { //13 is enter/return
-      self.doEnter();
+      doEnter();
     }
     else {
       console.log("Non printable: " + event.which);
@@ -93,19 +93,19 @@ CLI = function() {
       event.preventDefault();
       if (cursorPos > 0) {
         cursorPos--;
-        self.deleteCharacter();
+        deleteCharacter();
       }
     }
     else if (event.which == 37) { //left
       if (cursorPos > 0) {
         cursorPos--;
-        self.refreshCommand();
+        refreshCommand();
       }
     }
     else if (event.which == 39) { //right
       if (cursorPos < cmdString.length) {
         cursorPos++;
-        self.refreshCommand();
+        refreshCommand();
       }
     }
     else if (event.which == 38) { //up
@@ -116,7 +116,7 @@ CLI = function() {
         }
         cmdString = cmdHistory[histPos];
         cursorPos = cmdString.length;
-        self.refreshCommand();
+        refreshCommand();
       }
     }
     else if (event.which == 40) { //down
@@ -128,7 +128,7 @@ CLI = function() {
           cmdString = cmdHistory[histPos];
         }
         cursorPos = cmdString.length;
-        self.refreshCommand();
+        refreshCommand();
       }
     } else {
       console.log("Keydown: " + event.which);
@@ -136,7 +136,7 @@ CLI = function() {
   });
 
   $(window).resize(function() {
-    self.resize();
+    resize();
   });
 
 }
