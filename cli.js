@@ -22,11 +22,11 @@ CLI = function() {
 
   function refreshCommand() {
     if (cmdString.length == cursorPos) {
-      $("#command").empty().append(cmdString).append("<span id='cursor'> </span>");
+      $("#command").empty().append(cmdString).append("<span style='text-decoration: underline'>&nbsp;</span>");
     } else {
       $("#command").empty()
         .append(cmdString.substr(0, cursorPos))
-        .append("<span id='cursor'>" + cmdString.charAt(cursorPos) +  "</span>")
+        .append("<span style='text-decoration: underline'>" + cmdString.charAt(cursorPos) +  "</span>")
         .append(cmdString.substr(cursorPos + 1));
     }
   }
@@ -67,7 +67,8 @@ CLI = function() {
     }
   }
   
-  $("#text, #command, #prompt").addClass("text");
+  $('#cli').css({'font-family': 'monospace', 'position': 'absolute'});
+  $("#text, #command, #prompt").css('whitespace', 'pre');
   $("#prompt").append(prompt_str);
 
   refreshCommand();
