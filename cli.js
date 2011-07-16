@@ -1,6 +1,11 @@
-CLI = function() {
+CLI = function(options) {
 
-  var prompt_str = "> ";
+  if (options == undefined) {
+    options = {};
+  }
+
+  var prompt_str = options.prompt || "> ";
+
   var cmdString = "";
   var cursorPos = 0;
 
@@ -72,6 +77,9 @@ CLI = function() {
   $("#prompt").append(prompt_str);
 
   refreshCommand();
+  if (options.motd) {
+    print(options.motd);
+  }
 
   $(document).keypress(function(event) {
     if (event.which > 31 && event.which < 127) { //ascii printable for now
