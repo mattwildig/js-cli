@@ -1,8 +1,10 @@
-CLI = function(options) {
+CLI = function(commands, options) {
 
   if (options == undefined) {
     options = {};
   }
+
+  var self = this;
 
   var prompt_str = options.prompt || "> ";
 
@@ -15,7 +17,7 @@ CLI = function(options) {
 
   function doEnter() {
     addHistoryLine();
-    doCommand(cmdString);
+    commands.doCommand(cmdString, self);
     if ($.trim(cmdString) != "" && cmdString != cmdHistory[0]) {
       cmdHistory.unshift(cmdString);
     }
@@ -50,27 +52,17 @@ CLI = function(options) {
     $("#text").append("<div>" + prompt_str + cmdString + "</div>");
   }
 
-  function doCommand(command) {
-    command = $.trim(command);
-    if (command != "") {
-      print("Executing " + command);
-    }
-
-    if (command == "pulse") {
-      $("#cli").fadeOut("slow").fadeIn("slow");
-    }
-    resize();
-  }
-
   function print(line) {
     $("#text").append("<div>" + line + "</div>");
   }
+  this.print = print;
 
   function resize() {
     if ($("#cli").height() > window.innerHeight) {
       $("#cli").css("top", window.innerHeight - $("#cli").height());
     }
   }
+  this.resize = resize;
   
   $('#cli').css({'font-family': 'monospace', 'position': 'absolute'});
   $("#text, #command, #prompt").css('whitespace', 'pre');
