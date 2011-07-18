@@ -25,6 +25,7 @@ CLI = function(commands, options) {
     cmdString = "";
     cursorPos = 0;
     refreshCommand();
+    resize();
   }
 
   function refreshCommand() {
