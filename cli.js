@@ -78,6 +78,9 @@ CLI = function(commands, options) {
     if ($("#cli").height() > window.innerHeight) {
       $("#cli").css("top", window.innerHeight - $("#cli").height());
     }
+    else {
+      $("#cli").css("top", 0);
+    }
   }
   this.resize = resize;
   
