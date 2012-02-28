@@ -15,10 +15,24 @@ CLI = function(commands, options) {
   var histPos = -1;
   var histTmpCommand = "";
 
+  function doCommand(command, cli) {
+    command = $.trim(command).split(/\s+/);
+    
+    exec = command[0];
+    args = command.slice(1);
+    
+    if (commands[exec]) {
+      commands[exec](args, cli);
+    } else {
+      print("Unknown command: " + exec);
+    }
+
+  }
+
   function doEnter() {
     addHistoryLine();
     if ($.trim(cmdString) != "") {
-      commands.doCommand(cmdString, self);
+      doCommand(cmdString, self);
       if (cmdString != cmdHistory[0]) {
         cmdHistory.unshift(cmdString);
       }
