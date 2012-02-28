@@ -6,6 +6,10 @@ Commands = {
   
   echo: function(args, cli) {
     cli.print(args.join(" "));
+  },
+  
+  clr: function(args, cli) {
+    $("#text").empty();
   }
 
 }
