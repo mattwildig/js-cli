@@ -17,9 +17,11 @@ CLI = function(commands, options) {
 
   function doEnter() {
     addHistoryLine();
-    commands.doCommand(cmdString, self);
-    if ($.trim(cmdString) != "" && cmdString != cmdHistory[0]) {
-      cmdHistory.unshift(cmdString);
+    if ($.trim(cmdString) != "") {
+      commands.doCommand(cmdString, self);
+      if (cmdString != cmdHistory[0]) {
+        cmdHistory.unshift(cmdString);
+      }
     }
     histPos = -1;
     cmdString = "";
