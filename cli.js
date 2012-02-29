@@ -84,7 +84,7 @@ CLI = function(commands, options) {
   }
   this.resize = resize;
   
-  $('#cli').css({'font-family': 'monospace', 'position': 'absolute'});
+  $('#cli').css({'font-family': 'monospace', 'position': 'absolute', 'top': 0});
   $("#text, #command, #prompt").css('whitespace', 'pre');
   $("#prompt").append(prompt_str);
 
