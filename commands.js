@@ -10,6 +10,10 @@ Commands = {
   
   clr: function(args, cli) {
     $("#text").empty();
+  },
+  
+  motd: function(args, cli) {
+    cli.motd();
   }
 
 }

@@ -84,14 +84,19 @@ CLI = function(commands, options) {
   }
   this.resize = resize;
   
+  function print_motd() {
+    if (options.motd) {
+      print(options.motd);
+    }
+  }
+  this.motd = print_motd;
+  
   $('#cli').css({'font-family': 'monospace', 'position': 'absolute', 'top': 0});
   $("#text, #command, #prompt").css('whitespace', 'pre');
   $("#prompt").append(prompt_str);
 
   refreshCommand();
-  if (options.motd) {
-    print(options.motd);
-  }
+  print_motd();
 
   $(document).keypress(function(event) {
     if (event.which > 31 && event.which < 127) { //ascii printable for now
