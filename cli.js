@@ -91,6 +91,19 @@ CLI = function(commands, options) {
   }
   this.motd = print_motd;
   
+  function nodeWithId(type, id) {
+    node = document.createElement(type)
+    node.setAttribute("id", id);
+    return node;
+  }
+  
+  var text_div = nodeWithId('div', 'text');
+  var cmd_line = nodeWithId('div', "command-line");
+  cmd_line.appendChild(nodeWithId('span', "prompt"));
+  cmd_line.appendChild(nodeWithId('span', "command"));
+  
+  $('#cli').append(text_div, cmd_line);
+  
   $('#cli').css({'font-family': 'monospace', 'position': 'absolute', 'top': 0});
   $("#text, #command, #prompt").css('whitespace', 'pre');
   $("#prompt").append(prompt_str);
