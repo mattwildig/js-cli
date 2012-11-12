@@ -188,6 +188,7 @@ CLI = function(commands, options) {
     } else if (event.which == 9) { //tab
         doTab();
         event.preventDefault();
+    } else if (event.which == 13) { // enter - do nothing (see keypress)
     } else if (! (event.which > 31 && event.which < 127)){
       console.log("Keydown: " + event.which);
     }
