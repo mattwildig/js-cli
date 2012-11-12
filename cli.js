@@ -44,6 +44,24 @@ CLI = function(commands, options) {
     resize();
   }
 
+  function doTab() {
+      if ($.trim(cmdString) == "") {
+          return;
+      }
+
+      var len = cmdString.length;
+      var matches = Object.keys(commands).filter(function(item){return cmdString == item.substr(0, len);});
+
+      if (matches.length == 1) {
+          cmdString = matches[0];
+          cursorPos = cmdString.length;
+          refreshCommand();
+      } else if (matches.length > 1) {
+          addHistoryLine();
+          print(matches.join(" "));
+      }
+  }
+
   function refreshCommand() {
     if (cmdString.length == cursorPos) {
       $("#command").empty().append(cmdString).append("<span style='text-decoration: underline'>&nbsp;</span>");
@@ -167,6 +185,9 @@ CLI = function(commands, options) {
         cursorPos = cmdString.length;
         refreshCommand();
       }
+    } else if (event.which == 9) { //tab
+        doTab();
+        event.preventDefault();
     } else if (! (event.which > 31 && event.which < 127)){
       console.log("Keydown: " + event.which);
     }
